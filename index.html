@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Для Ясмины ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --r1:#ff6b9d; --r2:#ff8cb4; --r3:#ffb3cc;
+  --r4:#ffd6e8; --r5:#fff0f7; --r6:#fff8fc;
+  --deep:#8b2252; --mid:#c4557a; --sub:#a06080;
+  --text:#3d1a2e;
+  --shadow:0 20px 60px rgba(200,80,120,.22);
+  --shadow2:0 8px 32px rgba(200,80,120,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:'Montserrat',sans-serif;background:var(--r6);color:var(--text);overflow-x:hidden;cursor:none;}
+
+/* ── CURSOR ── */
+#cur{width:16px;height:16px;background:var(--r1);border-radius:50%;position:fixed;z-index:99999;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply;}
+#curR{width:38px;height:38px;border:2px solid var(--r2);border-radius:50%;position:fixed;z-index:99998;pointer-events:none;transform:translate(-50%,-50%);transition:all .15s ease;opacity:.6;}
+@media(pointer:coarse){#cur,#curR{display:none;}body{cursor:auto;}}
+
+/* ── CANVAS ── */
+#pc{position:fixed;inset:0;pointer-events:none;z-index:0;}
+
+/* ── BG ── */
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 10%,#ffd6e8,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 88% 18%,#ffb3cc,transparent 50%),
+    radial-gradient(ellipse 70% 60% at 50% 92%,#ffe0ee,transparent 55%),#fff8fc;
+  animation:bgS 14s ease-in-out infinite alternate;}
+@keyframes bgS{0%{filter:hue-rotate(0deg);}100%{filter:hue-rotate(8deg);}}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(55px);animation:orbF linear infinite;}
+.o1{width:380px;height:380px;background:rgba(255,182,210,.3);top:-90px;left:-90px;animation-duration:18s;}
+.o2{width:280px;height:280px;background:rgba(255,140,180,.22);top:45%;right:-70px;animation-duration:22s;animation-delay:-9s;}
+.o3{width:320px;height:320px;background:rgba(255,210,230,.35);bottom:-70px;left:35%;animation-duration:16s;animation-delay:-5s;}
+@keyframes orbF{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(28px,-28px) scale(1.07);}66%{transform:translate(-18px,18px) scale(.94);}}
+
+/* ── PROGRESS BAR ── */
+#pb{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--r1),var(--r2));z-index:9999;width:0%;transition:width .1s;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:rgba(255,248,252,.72);backdrop-filter:blur(22px) saturate(1.8);border-bottom:1px solid rgba(255,182,210,.3);animation:navIn .9s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes navIn{from{opacity:0;transform:translateY(-100%);}to{opacity:1;transform:translateY(0);}}
+.logo{font-family:'Great Vibes',cursive;font-size:clamp(1.3rem,4vw,1.8rem);background:linear-gradient(135deg,var(--r1),var(--deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;}
+.tab{padding:7px 16px;border:1.5px solid rgba(255,107,157,.4);border-radius:40px;background:rgba(255,255,255,.5);color:var(--mid);font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+.tab::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--r1),var(--deep));opacity:0;transition:opacity .35s;z-index:-1;}
+.tab:hover,.tab.on{color:#fff;border-color:transparent;box-shadow:0 8px 24px rgba(255,107,157,.4);}
+.tab:hover::after,.tab.on::after{opacity:1;}
+
+/* ── PAGE ── */
+.page{display:none;min-height:100vh;position:relative;z-index:1;opacity:0;transform:translateY(36px);transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1);}
+.page.active{display:block;}
+.page.vis{opacity:1;transform:translateY(0);}
+
+/* ── HERO ── */
+.hero{padding:120px 24px 50px;text-align:center;position:relative;}
+.eyebrow{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.8rem,2vw,1rem);letter-spacing:4px;text-transform:uppercase;color:var(--r1);margin-bottom:18px;animation:fu .7s .2s both;}
+.htitle{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,11vw,6.5rem);font-weight:700;line-height:1.06;color:var(--text);margin-bottom:14px;animation:fu .7s .4s both;}
+.htitle em{font-style:italic;background:linear-gradient(135deg,var(--r1),var(--deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hscript{font-family:'Great Vibes',cursive;font-size:clamp(1.5rem,5vw,2.4rem);color:var(--r2);margin-bottom:22px;animation:fu .7s .6s both;}
+.hsub{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2.5vw,1.2rem);font-style:italic;color:var(--sub);max-width:420px;margin:0 auto 38px;line-height:1.9;animation:fu .7s .8s both;}
+@keyframes fu{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.div{display:flex;align-items:center;gap:12px;justify-content:center;margin:30px auto;max-width:260px;animation:fu .7s 1s both;}
+.dl{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--r3),transparent);}
+.dg{width:9px;height:9px;background:var(--r1);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.7);opacity:.4;}}
+
+/* ── SECTION LABEL ── */
+.slabel{text-align:center;margin-bottom:32px;padding:0 16px;}
+.badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(255,107,157,.13),rgba(255,140,180,.08));border:1px solid rgba(255,107,157,.28);border-radius:40px;padding:5px 14px;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--r1);margin-bottom:10px;}
+.slabel h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,5vw,2.3rem);font-weight:400;color:var(--text);}
+.slabel h2 em{font-style:italic;color:var(--r1);}
+.slabel p{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--sub);font-size:.95rem;margin-top:4px;}
+
+/* ── PHOTO BOOTH ── */
+.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(155px,44%),1fr));gap:20px;max-width:880px;margin:0 auto;padding:10px 16px 30px;}
+.booth{background:#fff;border-radius:4px;padding:10px 10px 28px;box-shadow:0 6px 28px rgba(200,80,120,.18),0 2px 0 rgba(255,182,210,.4),inset 0 0 0 1px rgba(255,182,210,.25);cursor:pointer;position:relative;transform:translateY(30px) rotate(var(--r,0deg));opacity:0;transition:box-shadow .4s,transform .35s cubic-bezier(.34,1.56,.64,1);}
+.pb-grid .booth:nth-child(odd){--r:-1.4deg;}
+.pb-grid .booth:nth-child(even){--r:1.2deg;}
+.pb-grid .booth:nth-child(3n){--r:0.5deg;}
+.booth.revealed{animation:boothPop .65s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes boothPop{to{opacity:1;transform:translateY(0) rotate(var(--r,0deg));}}
+.booth:hover{transform:translateY(-7px) rotate(0deg) scale(1.04)!important;box-shadow:0 22px 55px rgba(255,107,157,.32),0 2px 0 rgba(255,182,210,.5);z-index:5;}
+.booth-img{width:100%;aspect-ratio:1;overflow:hidden;border-radius:2px;position:relative;background:var(--r4);}
+.booth-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.22,1,.36,1);}
+.booth:hover .booth-img img{transform:scale(1.08);}
+.booth-img .ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--r5),var(--r4));color:var(--r1);font-size:.65rem;font-weight:600;text-align:center;padding:10px;}
+.booth-img .ph .ic{font-size:1.8rem;}
+.booth-cap{margin-top:0;padding:8px 2px 0;text-align:center;font-family:'Great Vibes',cursive;font-size:1rem;color:var(--sub);pointer-events:none;}
+.booth::before,.booth::after{content:'';position:absolute;width:14px;height:14px;border-color:rgba(255,140,180,.5);border-style:solid;}
+.booth::before{top:6px;left:6px;border-width:2px 0 0 2px;}
+.booth::after{bottom:22px;right:6px;border-width:0 2px 2px 0;}
+
+/* ── CTA BUTTON ── */
+.cta{display:inline-flex;align-items:center;gap:9px;padding:15px 34px;background:linear-gradient(135deg,var(--r1),var(--deep));color:#fff;border:none;border-radius:50px;font-family:'Montserrat',sans-serif;font-size:.83rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 12px 35px rgba(255,107,157,.4);transition:all .4s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--r2),var(--r1));opacity:0;transition:opacity .3s;}
+.cta:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 20px 50px rgba(255,107,157,.5);}
+.cta:hover::before{opacity:1;}
+.cta span{position:relative;z-index:1;}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:0;height:0;transform:translate(-50%,-50%);animation:rOut .6s ease forwards;}
+@keyframes rOut{to{width:280px;height:280px;opacity:0;}}
+
+/* ── SCROLL TOP ── */
+.stbtn{position:fixed;bottom:22px;right:18px;z-index:500;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--r1),var(--deep));color:#fff;border:none;display:none;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 22px rgba(255,107,157,.4);transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.stbtn.show{display:flex;}
+.stbtn:hover{transform:scale(1.15) translateY(-3px);}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:44px 20px;background:linear-gradient(180deg,transparent,rgba(255,210,228,.2));border-top:1px solid rgba(255,182,210,.22);}
+footer .fh{font-size:1.8rem;animation:pulse 2s ease-in-out infinite;}
+footer p{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--sub);font-size:.95rem;margin-top:7px;}
+
+/* ── SECTION SPACING ── */
+.sec{padding:18px 0 54px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){.pb-grid{grid-template-columns:repeat(2,1fr);gap:14px;}.booth{padding:7px 7px 22px;}}
+
+/* ═══════════════════════
+   PAGE 2 — QUIZ
+═══════════════════════ */
+.quiz-scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:90px 22px 60px;}
+.quiz-card{background:rgba(255,255,255,.72);backdrop-filter:blur(32px) saturate(1.8);border:1.5px solid rgba(255,182,210,.4);border-radius:36px;padding:clamp(28px,6vw,52px) clamp(20px,5vw,44px);max-width:520px;width:100%;box-shadow:0 30px 80px rgba(200,80,120,.2),inset 0 1px 0 rgba(255,255,255,.6);animation:cardFl 6s ease-in-out infinite;}
+@keyframes cardFl{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+.q-progress{display:flex;gap:8px;justify-content:center;margin-bottom:28px;}
+.q-dot{width:32px;height:5px;border-radius:10px;background:rgba(255,182,210,.3);transition:all .4s cubic-bezier(.34,1.56,.64,1);}
+.q-dot.done{background:var(--r1);}
+.q-dot.active{background:linear-gradient(90deg,var(--r1),var(--r2));box-shadow:0 0 12px rgba(255,107,157,.5);}
+
+.q-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:var(--sub);letter-spacing:2px;text-align:center;margin-bottom:10px;}
+.q-text{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.5rem);font-weight:400;color:var(--text);text-align:center;margin-bottom:28px;line-height:1.5;}
+.q-opts{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.q-opt{padding:13px 20px;border:1.5px solid rgba(255,182,210,.45);border-radius:50px;background:rgba(255,248,252,.8);color:var(--text);font-family:'Montserrat',sans-serif;font-size:.84rem;font-weight:500;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);text-align:left;position:relative;overflow:hidden;}
+.q-opt::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--r1),var(--deep));opacity:0;transition:opacity .3s;z-index:0;}
+.q-opt span{position:relative;z-index:1;}
+.q-opt:hover{border-color:var(--r1);color:var(--r1);transform:translateX(6px);}
+.q-opt.selected{border-color:var(--r1);background:linear-gradient(135deg,var(--r1),var(--deep));color:#fff;box-shadow:0 8px 28px rgba(255,107,157,.4);}
+.q-opt.selected::after{opacity:0;}
+.q-opt.wrong{border-color:#e05;background:rgba(255,0,80,.08);color:#c0305a;animation:shakeQ .4s ease;}
+@keyframes shakeQ{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.q-opt.correct{border-color:#4caf50;background:rgba(76,175,80,.08);color:#2e7d32;}
+
+.q-err{text-align:center;font-size:.8rem;color:#e0507a;font-weight:600;height:20px;opacity:0;transition:opacity .3s;margin-top:4px;}
+.q-err.show{opacity:1;}
+
+/* ── QUIZ SUCCESS ── */
+.quiz-success{display:none;text-align:center;}
+.quiz-success.show{display:block;animation:fu .7s both;}
+.qs-icon{font-size:3.5rem;margin-bottom:16px;animation:bounceIn .7s cubic-bezier(.34,1.56,.64,1);}
+@keyframes bounceIn{from{transform:scale(0) rotate(-20deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.qs-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,1.9rem);color:var(--text);margin-bottom:8px;}
+.qs-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--sub);font-size:1rem;margin-bottom:28px;line-height:1.7;}
+
+/* ═══════════════════════
+   PAGE 3 — LETTER
+═══════════════════════ */
+.letter-hero{padding:120px 24px 40px;text-align:center;}
+
+/* ── LETTER CARD ── */
+.letter-wrap{max-width:680px;margin:0 auto;padding:0 16px 80px;position:relative;}
+.letter-glow{position:absolute;inset:-30px;border-radius:44px;background:radial-gradient(ellipse at 50% 0%,rgba(255,182,210,.35),transparent 60%);animation:lglow 4s ease-in-out infinite alternate;pointer-events:none;}
+@keyframes lglow{from{opacity:.5;transform:scale(.96);}to{opacity:1;transform:scale(1.04);}}
+
+.letter-card{background:rgba(255,255,255,.74);backdrop-filter:blur(32px) saturate(2);border:1.5px solid rgba(255,182,210,.45);border-radius:36px;padding:clamp(28px,6vw,54px);box-shadow:0 30px 80px rgba(200,80,120,.18),inset 0 1px 0 rgba(255,255,255,.65);position:relative;overflow:hidden;}
+.letter-card::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,182,210,.22),transparent 70%);animation:rotateSlow 22s linear infinite;}
+.letter-card::after{content:'';position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(255,140,180,.18),transparent 70%);animation:rotateSlow 17s linear infinite reverse;}
+@keyframes rotateSlow{to{transform:rotate(360deg);}}
+
+/* ── LETTER PHOTO ── */
+.letter-photo-frame{
+  margin:0 auto 32px;
+  max-width:300px;
+  background:#fff;
+  border-radius:4px;
+  padding:10px 10px 36px;
+  box-shadow:0 12px 40px rgba(200,80,120,.22),inset 0 0 0 1px rgba(255,182,210,.3);
+  transform:rotate(-1.5deg);
+  opacity:0;
+  animation:photoReveal .9s cubic-bezier(.34,1.56,.64,1) .2s forwards;
+  position:relative;
+}
+@keyframes photoReveal{to{opacity:1;transform:rotate(-1.5deg) translateY(0);}}
+.letter-photo-frame::before,.letter-photo-frame::after{content:'';position:absolute;width:14px;height:14px;border-color:rgba(255,140,180,.5);border-style:solid;}
+.letter-photo-frame::before{top:6px;left:6px;border-width:2px 0 0 2px;}
+.letter-photo-frame::after{bottom:24px;right:6px;border-width:0 2px 2px 0;}
+.letter-photo-img{width:100%;aspect-ratio:3/4;overflow:hidden;border-radius:2px;background:var(--r4);}
+.letter-photo-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.letter-photo-cap{padding:10px 2px 0;text-align:center;font-family:'Great Vibes',cursive;font-size:1.1rem;color:var(--sub);}
+
+/* ── LETTER TEXT ── */
+.l-date{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.88rem;color:var(--sub);margin-bottom:22px;animation:fu .6s .6s both;}
+.l-sal{font-family:'Great Vibes',cursive;font-size:clamp(1.8rem,5vw,2.6rem);color:var(--r1);margin-bottom:24px;text-align:center;animation:fu .6s .8s both;}
+.l-body{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.18rem);line-height:2;color:var(--text);}
+.l-line{opacity:0;transform:translateX(-14px);display:block;margin-bottom:0;}
+.l-line.shown{animation:lf .7s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes lf{to{opacity:1;transform:translateX(0);}}
+.l-hearts{display:flex;gap:8px;justify-content:center;margin-top:28px;}
+.l-hearts span{font-size:1.3rem;opacity:0;transform:scale(0);}
+.l-hearts span.shown{animation:hB .6s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes hB{to{opacity:1;transform:scale(1);}}
+
+/* ── LIGHTBOX ── */
+#lb{position:fixed;inset:0;z-index:9999;background:rgba(30,5,18,.93);display:none;align-items:center;justify-content:center;padding:18px;}
+#lb.open{display:flex;}
+#lbImg{max-width:min(92vw,820px);max-height:85vh;border-radius:4px;border:10px solid #fff;box-shadow:0 30px 80px rgba(0,0,0,.7);object-fit:contain;animation:lbP .4s cubic-bezier(.22,1,.36,1);}
+@keyframes lbP{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.lbx{position:absolute;top:16px;right:18px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.lbx:hover{background:var(--r1);transform:scale(1.15) rotate(90deg);}
+
+/* ── PETAL CANVAS ── */
+#petalCv{position:fixed;inset:0;pointer-events:none;z-index:8500;display:none;}
+</style>
+</head>
+<body>
+
+<div id="pb"></div>
+<div id="cur"></div>
+<div id="curR"></div>
+<canvas id="pc"></canvas>
+<div class="bg"></div>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<!-- LIGHTBOX -->
+<div id="lb">
+  <button class="lbx" onclick="closeLb()">✕</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<canvas id="petalCv"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">✦ Ясмина ✦</div>
+  <div class="tabs">
+    <button class="tab on" id="tab1" onclick="gp(1,this)">🌸 Главная</button>
+    <button class="tab" id="tab2" onclick="gp(2,this)">💝 Тест</button>
+    <button class="tab" id="tab3" onclick="gp(3,this)" style="display:none;">💌 Письмо</button>
+  </div>
+</nav>
+
+<!-- ════════════ PAGE 1 ════════════ -->
+<div class="page active" id="page1">
+  <div class="hero">
+    <p class="eyebrow">✦ специально для тебя ✦</p>
+    <h1 class="htitle">Привет,<br><em>Ясмина</em></h1>
+    <p class="hscript">Надеюсь тебе понравится 🌸</p>
+    <div class="div"><div class="dl"></div><div class="dg"></div><div class="dl"></div></div>
+  </div>
+
+  <div style="padding:0 0 20px;">
+    <div class="slabel">
+      <div class="badge">📸 Галерея</div>
+      <h2><em>Твои</em> фотографии</h2>
+    </div>
+    <div class="pb-grid" id="g1">
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">🌸</div><img src="img/1.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">🌷</div><img src="img/8.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">🌺</div><img src="img/2.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">✨</div><img src="img/3.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">💐</div><img src="img/4.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">🎀</div><img src="img/5.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">🌙</div><img src="img/6.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+      <div class="booth" onclick="openLb(this,'g1')">
+        <div class="booth-img"><div class="ph" style="display:flex"><div class="ic">🦋</div><img src="img/7.jpg"></div></div>
+        <div class="booth-cap">Ясмина ♥</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;padding-bottom:30px;">
+      <button class="cta" onclick="rip(event,this);gp(2,document.getElementById('tab2'))">
+        <span>Открыть сюрприз →</span>
+      </button>
+    </div>
+  </div>
+  <footer><div class="fh">♥</div><p>Сделано с любовью для тебя</p></footer>
+</div>
+
+<!-- ════════════ PAGE 2 — QUIZ ════════════ -->
+<div class="page" id="page2">
+  <div class="quiz-scene">
+    <div class="quiz-card">
+
+      <!-- QUIZ CONTENT -->
+      <div id="quizContent">
+        <div class="q-progress" id="qProgress">
+          <div class="q-dot active" id="qdot0"></div>
+          <div class="q-dot" id="qdot1"></div>
+          <div class="q-dot" id="qdot2"></div>
+          <div class="q-dot" id="qdot3"></div>
+        </div>
+        <div class="q-num" id="qNum">Вопрос 1 из 4</div>
+        <div class="q-text" id="qText"></div>
+        <div class="q-opts" id="qOpts"></div>
+        <div class="q-err" id="qErr">Неправильно 💔 Попробуй ещё раз</div>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="quiz-success" id="quizSuccess">
+        <div class="qs-icon">🎉</div>
+        <h2 class="qs-title">Все правильно!</h2>
+        <p class="qs-sub">Ты знаешь нас лучше всех ✨<br>Тебя ждёт особенное письмо...</p>
+        <button class="cta" onclick="rip(event,this);unlockLetter()"><span>Открыть письмо 💌</span></button>
+      </div>
+
+    </div>
+  </div>
+  <footer><div class="fh">♥</div><p>Ответь правильно, чтобы открыть письмо 💌</p></footer>
+</div>
+
+<!-- ════════════ PAGE 3 — LETTER ════════════ -->
+<div class="page" id="page3">
+  <div class="letter-hero">
+    <p class="eyebrow">✦ только для тебя ✦</p>
+    <h1 class="htitle">Ясмина —<br><em>это тебе</em> 💗</h1>
+    <div class="div"><div class="dl"></div><div class="dg"></div><div class="dl"></div></div>
+  </div>
+
+  <div class="letter-wrap">
+    <div class="letter-glow"></div>
+    <div class="letter-card" id="lCard">
+
+      <!-- BEAUTIFUL PHOTO -->
+      <div class="letter-photo-frame">
+        <div class="letter-photo-img">
+          <!-- Замени src на ссылку на красивое фото -->
+          <div class="ph" style="display:flex;height:100%;flex-direction:column;gap:8px;background:linear-gradient(160deg,var(--r5),var(--r4));color:var(--r1);">
+            <div class="ic" style="font-size:3rem;">🌸</div>
+            <div style="font-size:.7rem;font-weight:600;"></div>
+            <div style="font-size:.6rem;font-style:italic;color:var(--sub);"><img src="img/12.jpg "></div>
+          </div>
+        </div>
+        <div class="letter-photo-cap">Ясмина ♥</div>
+      </div>
+
+      <div class="l-date" id="lDate"></div>
+      <div class="l-sal">Jonim,</div>
+      <div class="l-body" id="lBody">
+        <span class="l-line">I still can't believe it has already been one year and one month</span>
+        <span class="l-line">since you came into my life.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">April 30 became such a special date for me,</span>
+        <span class="l-line">because that was the beginning of so many happy memories,</span>
+        <span class="l-line">emotions, and moments that I will never forget.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">During this time, you became much more than just a girlfriend to me.</span>
+        <span class="l-line">You became the person who makes me feel truly alive.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">I love everything about you —</span>
+        <span class="l-line">your voice, your laugh, your habits,</span>
+        <span class="l-line">even the moments when you get upset or angry.</span>
+        <span class="l-line">All of that is you,</span>
+        <span class="l-line">and that is exactly why I love you so much.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">Thank you for all our walks, late-night conversations,</span>
+        <span class="l-line">your support, your care,</span>
+        <span class="l-line">and the warmth you give me every single day.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">With you, even ordinary days feel special.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">I truly appreciate every moment we spend together,</span>
+        <span class="l-line">and I want us to create even more beautiful memories</span>
+        <span class="l-line">and stories in the future.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">You became such an important part of my life,</span>
+        <span class="l-line">and I never want to lose what we have.</span>
+        <span class="l-line"> </span>
+        <span class="l-line">Thank you for being by my side.</span>
+        <span class="l-line">I love you ❤️</span>
+      </div>
+      <div class="l-hearts" id="lHearts">
+        <span>🌹</span><span>💕</span><span>✨</span><span>💖</span><span>🌸</span>
+      </div>
+    </div>
+  </div>
+
+  <footer style="margin-top:20px;"><div class="fh">♥</div><p>Ясмина — ты лучшая. Всегда.</p></footer>
+</div>
+
+<button class="stbtn" id="stb" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';curR.style.left=e.clientX+'px';curR.style.top=e.clientY+'px';});
+document.querySelectorAll('button,.booth,.q-opt').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='28px';cur.style.height='28px';curR.style.width='56px';curR.style.height='56px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='16px';cur.style.height='16px';curR.style.width='38px';curR.style.height='38px';});
+});
+
+/* ── PROGRESS + SCROLL TOP ── */
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement;
+  document.getElementById('pb').style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+  document.getElementById('stb').classList.toggle('show',s.scrollTop>280);
+});
+
+/* ── CANVAS PARTICLES ── */
+(()=>{
+  const cv=document.getElementById('pc'),cx=cv.getContext('2d');
+  let W,H,ps=[];
+  const resize=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;};
+  resize();window.addEventListener('resize',resize);
+  const em=['❤','🌸','✿','♥','❀','·','⋆','♡'];
+  class P{
+    reset(i){this.x=Math.random()*W;this.y=i?Math.random()*H:H+20;this.s=.5+Math.random()*1.6;this.sp=.35+Math.random()*1.1;this.vx=(Math.random()-.5)*.55;this.op=.25+Math.random()*.5;this.rot=Math.random()*360;this.rv=(Math.random()-.5)*1.8;this.e=em[Math.floor(Math.random()*em.length)];}
+    constructor(){this.reset(true);}
+    draw(){cx.save();cx.globalAlpha=this.op;cx.font=`${this.s*13}px serif`;cx.translate(this.x,this.y);cx.rotate(this.rot*Math.PI/180);cx.fillText(this.e,0,0);cx.restore();}
+    upd(){this.y-=this.sp;this.x+=this.vx;this.rot+=this.rv;if(this.y<-30)this.reset(false);}
+  }
+  for(let i=0;i<38;i++)ps.push(new P());
+  const loop=()=>{cx.clearRect(0,0,W,H);ps.forEach(p=>{p.upd();p.draw();});requestAnimationFrame(loop);};
+  loop();
+})();
+
+/* ── PAGE SWITCH ── */
+function gp(n,btn){
+  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active','vis');});
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const pg=document.getElementById('page'+n);
+  pg.classList.add('active');
+  if(btn)btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>{pg.classList.add('vis');initReveal();if(n===3)initLetter();},80);
+}
+setTimeout(()=>{document.getElementById('page1').classList.add('vis');initReveal();},100);
+
+/* ── REVEAL ON SCROLL ── */
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target;
+      const idx=Array.from(el.parentNode.children).indexOf(el);
+      setTimeout(()=>el.classList.add('revealed'),idx*90);
+      obs.unobserve(el);
+    });
+  },{threshold:.08});
+  document.querySelectorAll('.booth:not(.revealed)').forEach(el=>obs.observe(el));
+}
+
+/* ── LIGHTBOX ── */
+let lbArr=[],lbI=0;
+function openLb(card,gId){
+  const cards=document.getElementById(gId).querySelectorAll('.booth');
+  lbArr=[];let ci=0;
+  cards.forEach((c,i)=>{
+    const img=c.querySelector('img');
+    if(img&&img.src&&img.complete&&img.naturalWidth>0&&img.style.display!=='none'){
+      if(c===card)ci=lbArr.length;
+      lbArr.push(img.src);
+    }
+  });
+  if(!lbArr.length)return;
+  lbI=ci;
+  document.getElementById('lbImg').src=lbArr[lbI];
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===document.getElementById('lb'))closeLb();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();});
+
+/* ── RIPPLE ── */
+function rip(e,btn){
+  const r=document.createElement('span');r.className='ripple';
+  const rc=btn.getBoundingClientRect();
+  r.style.left=(e.clientX-rc.left)+'px';r.style.top=(e.clientY-rc.top)+'px';
+  btn.appendChild(r);setTimeout(()=>r.remove(),700);
+}
+
+/* ── MAGNETIC BUTTONS ── */
+document.querySelectorAll('.cta,.tab').forEach(b=>{
+  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();const x=(e.clientX-r.left-r.width/2)*.22;const y=(e.clientY-r.top-r.height/2)*.22;b.style.transform=`translate(${x}px,${y}px) translateY(-2px)`;});
+  b.addEventListener('mouseleave',()=>b.style.transform='');
+});
+
+/* ══════════════════════
+   QUIZ LOGIC
+══════════════════════ */
+const questions = [
+  {
+    text: "Дата вашей первой встречи?",
+    opts: ["14 февраля 2025", "25 апреля 2025", "1 мая 2025"],
+    correct: 1
+  },
+  {
+    text: "Где прошло ваше первое свидание?",
+    opts: ["Парк", "Кафе", "Кинотеатр"],
+    correct: 2
+  },
+  {
+    text: "Кто первым написал после знакомства?",
+    opts: ["Ты", "Она", "Уже не помните 😄"],
+    correct: 0
+  },
+  {
+    text: "Что вы чаще всего делаете вместе?",
+    opts: ["Гуляете", "Смотрите фильмы", "Просто болтаете часами"],
+    correct: 2
+  }
+];
+
+let qIdx = 0;
+let answered = false;
+
+function renderQ(){
+  const q = questions[qIdx];
+  document.getElementById('qNum').textContent = `Вопрос ${qIdx+1} из ${questions.length}`;
+  document.getElementById('qText').textContent = q.text;
+
+  // dots
+  questions.forEach((_,i)=>{
+    const d = document.getElementById('qdot'+i);
+    d.className = 'q-dot' + (i < qIdx ? ' done' : i === qIdx ? ' active' : '');
+  });
+
+  const optsEl = document.getElementById('qOpts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.innerHTML = `<span>${String.fromCharCode(97+i)}) ${opt}</span>`;
+    btn.onclick = () => selectOpt(i, btn);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('qErr').classList.remove('show');
+  answered = false;
+}
+
+function selectOpt(idx, btn){
+  if(answered) return;
+  answered = true;
+  const correct = questions[qIdx].correct;
+
+  if(idx === correct){
+    btn.classList.add('selected');
+    setTimeout(()=>{
+      qIdx++;
+      if(qIdx >= questions.length){
+        // Show success
+        document.getElementById('quizContent').style.display = 'none';
+        document.getElementById('quizSuccess').classList.add('show');
+        launchPetals();
+      } else {
+        renderQ();
+      }
+    }, 600);
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('qErr').classList.add('show');
+    setTimeout(()=>{
+      btn.classList.remove('wrong');
+      document.getElementById('qErr').classList.remove('show');
+      answered = false;
+    }, 1500);
+  }
+}
+
+function unlockLetter(){
+  document.getElementById('tab3').style.display = 'flex';
+  gp(3, document.getElementById('tab3'));
+}
+
+// Init quiz when page 2 first shown
+let quizInited = false;
+const origGp = gp;
+function gp(n,btn){
+  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active','vis');});
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const pg=document.getElementById('page'+n);
+  pg.classList.add('active');
+  if(btn)btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>{
+    pg.classList.add('vis');
+    initReveal();
+    if(n===2 && !quizInited){quizInited=true;renderQ();}
+    if(n===3)initLetter();
+  },80);
+}
+setTimeout(()=>{document.getElementById('page1').classList.add('vis');initReveal();},100);
+
+/* ── LETTER ANIMATION ── */
+let lDone = false;
+function initLetter(){
+  if(lDone) return;
+  lDone = true;
+  const months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const now = new Date();
+  document.getElementById('lDate').textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} г.`;
+
+  const lines = document.querySelectorAll('#lBody .l-line');
+  lines.forEach((l,i)=>setTimeout(()=>l.classList.add('shown'), 400+i*160));
+  const tot = 400+lines.length*160;
+  document.querySelectorAll('#lHearts span').forEach((h,i)=>setTimeout(()=>h.classList.add('shown'), tot+300+i*120));
+}
+
+/* ── PETAL BURST ── */
+function launchPetals(){
+  const cv = document.getElementById('petalCv');
+  cv.style.display = 'block';
+  const cx = cv.getContext('2d');
+  let W = cv.width = innerWidth;
+  let H = cv.height = innerHeight;
+  const EMOJIS = ['🌸','🌷','🌺','💐','🌹','✿','❀','🌼','💮','💕','✨','💖'];
+  const petals = [];
+  for(let i=0;i<100;i++){
+    petals.push({
+      x:W*0.3+Math.random()*W*0.4, y:H*0.6+Math.random()*100,
+      vx:(Math.random()-0.5)*9, vy:-(5+Math.random()*14),
+      rot:Math.random()*360, rv:(Math.random()-0.5)*8,
+      s:0.9+Math.random()*1.6, op:1,
+      e:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],
+      life:180+Math.floor(Math.random()*120), age:-Math.floor(Math.random()*60)
+    });
+  }
+  let frame=0;
+  function loop(){
+    cx.clearRect(0,0,W,H);
+    petals.forEach(p=>{
+      if(p.age<0){p.age++;return;}
+      p.age++;
+      if(p.age>p.life){p.op-=0.03;if(p.op<=0)return;}
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.18; p.vx*=0.995; p.rot+=p.rv;
+      cx.save();cx.globalAlpha=Math.max(0,p.op);cx.font=`${p.s*18}px serif`;
+      cx.translate(p.x,p.y);cx.rotate(p.rot*Math.PI/180);cx.fillText(p.e,0,0);cx.restore();
+    });
+    frame++;
+    if(frame<280)requestAnimationFrame(loop);
+    else{cx.clearRect(0,0,W,H);cv.style.display='none';}
+  }
+  loop();
+}
+</script>
+</body>
+</html>
